@@ -1,0 +1,74 @@
+-- 下载 vc-mysql-sniffer // vc-mysql-sniffer.zip package
+-- https://www.vividcortex.com/resources/network-analyzer-for-mysql
+
+-- usage 
+unzip vc-mysql-sniffer.zip 
+cd vc-mysql-sniffer
+./vc-mysql-sniffer -h
+vc-mysql-sniffer is a utility from VividCortex to monitor query activity and write results to a file.
+See --license for the terms governing your usage of this program.
+
+  -binding="[::]:3306"         This is a list of comma separated bind strings as seen in /proc/net/tcp
+  -help="false"                Show this usage message
+  -help-json="false"           Show this usage message as JSON
+  -license="false"             Print the usage terms of this program
+  -output=""                   Filepath to output queries to. Defaults to stdout if none specified.
+  -show-database="false"       Include a 'USE `database`' for every statement. Supersedes show-database-changes.
+  -show-database-changes="true"
+                               Include a 'USE `database`' every time the database is changed.
+  -verbose="false"             Enable logging on program startup to stderr
+  -version="false"             Show version and exit
+
+  Flag                         Current value
+--------------------------------------------
+  -binding                     "[::]:3306"
+  -help                        "true"
+  -help-json                   "false"
+  -license                     "false"
+  -output                      ""
+  -show-database               "false"
+  -show-database-changes       "true"
+  -verbose                     "false"
+  -version                     "false"
+
+
+
+[root@master vc-mysql-sniffer]# ./vc-mysql-sniffer -binding="[::]:3307"
+# Time: 091218 14:14:51.010216
+# User@Host: root[root] @ 188.188.23.221:60858 []
+# Query_time: 0.000136
+USE ``;
+select @@version_comment limit 1;
+# Time: 091218 14:15:08.873772
+# User@Host: root[root] @ 188.188.23.221:60858 []
+# Query_time: 0.000109
+show processlist;
+# Time: 091218 14:15:47.670674
+# User@Host: root[root] @ 188.188.23.221:60858 []
+# Query_time: 0.000522
+show variables like '%port%';
+# Time: 091218 14:15:57.545395
+# User@Host: root[root] @ 188.188.23.221:60858 []
+# Query_time: 0.000289
+show databases;
+# Time: 091218 14:15:59.863208
+# User@Host: root[root] @ 188.188.23.221:60858 []
+# Query_time: 0.000114
+SELECT DATABASE();
+# Time: 091218 14:15:59.864819
+# User@Host: root[root] @ 188.188.23.221:60858 []
+# Query_time: 0.000215
+USE `monitor`;
+show databases;
+# Time: 091218 14:15:59.865606
+# User@Host: root[root] @ 188.188.23.221:60858 []
+# Query_time: 0.000173
+show tables;
+# Time: 091218 14:16:03.281198
+# User@Host: root[root] @ 188.188.23.221:60858 []
+# Query_time: 0.000289
+show tables;
+# Time: 091218 14:16:10.248004
+# User@Host: root[root] @ 188.188.23.221:60858 []
+# Query_time: 0.000226
+select * from auto_backup;
