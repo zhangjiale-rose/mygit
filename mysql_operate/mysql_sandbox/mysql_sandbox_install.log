@@ -1,0 +1,313 @@
+yum install cpan -y
+yum install perl-Test-Simple -y
+[root@master bin]# cpan MySQL::Sandbox   --   输出类似如下
+..........
+MySQL-Sandbox-3.2.17/t/user_privileges.sb.pl
+MySQL-Sandbox-3.2.17/lib/MySQL/
+MySQL-Sandbox-3.2.17/lib/MySQL/Sandbox/
+MySQL-Sandbox-3.2.17/lib/MySQL/Sandbox.pm
+MySQL-Sandbox-3.2.17/lib/MySQL/Sandbox/Recipes.pm
+MySQL-Sandbox-3.2.17/lib/MySQL/Sandbox/Scripts.pm
+MySQL-Sandbox-3.2.17/bin/deploy_to_remote_sandboxes.sh
+MySQL-Sandbox-3.2.17/bin/low_level_make_sandbox
+MySQL-Sandbox-3.2.17/bin/make_multiple_custom_sandbox
+MySQL-Sandbox-3.2.17/bin/make_multiple_sandbox
+MySQL-Sandbox-3.2.17/bin/make_replication_sandbox
+MySQL-Sandbox-3.2.17/bin/make_sandbox
+MySQL-Sandbox-3.2.17/bin/make_sandbox_from_installed
+MySQL-Sandbox-3.2.17/bin/make_sandbox_from_source
+MySQL-Sandbox-3.2.17/bin/make_sandbox_from_url
+MySQL-Sandbox-3.2.17/bin/msandbox
+MySQL-Sandbox-3.2.17/bin/msb
+MySQL-Sandbox-3.2.17/bin/sbtool
+MySQL-Sandbox-3.2.17/bin/test_sandbox
+CPAN: File::Temp loaded ok (v0.22)
+
+  CPAN.pm: Going to build G/GM/GMAX/MySQL-Sandbox-3.2.17.tar.gz
+
+Checking if your kit is complete...
+Looks good
+Writing Makefile for MySQL::Sandbox
+Could not read '/root/.cpan/build/MySQL-Sandbox-3.2.17-9Yzd_G/META.yml'. Falling back to other methods to determine prerequisites
+cp lib/MySQL/Sandbox/Scripts.pm blib/lib/MySQL/Sandbox/Scripts.pm
+cp lib/MySQL/Sandbox/Recipes.pm blib/lib/MySQL/Sandbox/Recipes.pm
+cp lib/MySQL/Sandbox.pm blib/lib/MySQL/Sandbox.pm
+cp bin/deploy_to_remote_sandboxes.sh blib/script/deploy_to_remote_sandboxes.sh
+/usr/bin/perl -MExtUtils::MY -e 'MY->fixin(shift)' -- blib/script/deploy_to_remote_sandboxes.sh
+cp bin/msandbox blib/script/msandbox
+/usr/bin/perl -MExtUtils::MY -e 'MY->fixin(shift)' -- blib/script/msandbox
+cp bin/make_replication_sandbox blib/script/make_replication_sandbox
+/usr/bin/perl -MExtUtils::MY -e 'MY->fixin(shift)' -- blib/script/make_replication_sandbox
+cp bin/make_multiple_sandbox blib/script/make_multiple_sandbox
+/usr/bin/perl -MExtUtils::MY -e 'MY->fixin(shift)' -- blib/script/make_multiple_sandbox
+cp bin/make_sandbox_from_url blib/script/make_sandbox_from_url
+/usr/bin/perl -MExtUtils::MY -e 'MY->fixin(shift)' -- blib/script/make_sandbox_from_url
+cp bin/test_sandbox blib/script/test_sandbox
+/usr/bin/perl -MExtUtils::MY -e 'MY->fixin(shift)' -- blib/script/test_sandbox
+cp bin/make_sandbox blib/script/make_sandbox
+/usr/bin/perl -MExtUtils::MY -e 'MY->fixin(shift)' -- blib/script/make_sandbox
+cp bin/make_sandbox_from_installed blib/script/make_sandbox_from_installed
+/usr/bin/perl -MExtUtils::MY -e 'MY->fixin(shift)' -- blib/script/make_sandbox_from_installed
+cp bin/low_level_make_sandbox blib/script/low_level_make_sandbox
+/usr/bin/perl -MExtUtils::MY -e 'MY->fixin(shift)' -- blib/script/low_level_make_sandbox
+cp bin/msb blib/script/msb
+/usr/bin/perl -MExtUtils::MY -e 'MY->fixin(shift)' -- blib/script/msb
+cp bin/make_multiple_custom_sandbox blib/script/make_multiple_custom_sandbox
+/usr/bin/perl -MExtUtils::MY -e 'MY->fixin(shift)' -- blib/script/make_multiple_custom_sandbox
+cp bin/sbtool blib/script/sbtool
+/usr/bin/perl -MExtUtils::MY -e 'MY->fixin(shift)' -- blib/script/sbtool
+cp bin/make_sandbox_from_source blib/script/make_sandbox_from_source
+/usr/bin/perl -MExtUtils::MY -e 'MY->fixin(shift)' -- blib/script/make_sandbox_from_source
+Manifying blib/man3/MySQL::Sandbox::Scripts.3pm
+Manifying blib/man3/MySQL::Sandbox::Recipes.3pm
+Manifying blib/man3/MySQL::Sandbox.3pm
+  GMAX/MySQL-Sandbox-3.2.17.tar.gz
+  /usr/bin/make -- OK
+Warning (usually harmless): 'YAML' not installed, will not store persistent state
+Running make test
+PERL_DL_NONLAZY=1 /usr/bin/perl "-MExtUtils::Command::MM" "-e" "test_harness(0, 'blib/lib', 'blib/arch')" t/*.t
+t/01_modules.t ...................... ok   
+t/02_test_binaries.t ................ ok   
+t/03_test_sandbox.t ................. ok   
+t/04_test_sbtool.t .................. ok   
+t/05_test_smoke.t ................... ok   
+t/06_test_user_defined.t ............ ok   
+t/07_test_user_defined.t ............ ok   
+t/08_test_single_port_checking.t .... ok   
+t/09_test_multiple_port_checking.t .. ok   
+t/10_check_start_restart.t .......... ok   
+t/11_replication_parameters.t ....... ok   
+t/12_custom_user_pwd.t .............. ok   
+t/13_innodb_plugin_install.t ........ ok   
+t/14_semi_synch_plugin_install.t .... ok   
+t/15_user_privileges.t .............. ok   
+t/16_replication_options.t .......... ok   
+t/17_replication_flow.t ............. ok   
+t/18_force_creation.t ............... ok   
+t/19_replication_gtid.t ............. ok   
+t/20_add_option.t ................... ok   
+t/21_replication_gtid_option.t ...... ok   
+t/22_init_exec_sql.t ................ ok   
+t/23_mysqlx_plugin.t ................ ok   
+t/24_dd_expose.t .................... ok   
+All tests successful.
+Files=24, Tests=26,  1 wallclock secs ( 0.05 usr  0.02 sys +  0.46 cusr  0.07 csys =  0.60 CPU)
+Result: PASS
+  GMAX/MySQL-Sandbox-3.2.17.tar.gz
+  /usr/bin/make test -- OK
+Warning (usually harmless): 'YAML' not installed, will not store persistent state
+Running make install
+Prepending /root/.cpan/build/MySQL-Sandbox-3.2.17-9Yzd_G/blib/arch /root/.cpan/build/MySQL-Sandbox-3.2.17-9Yzd_G/blib/lib to PERL5LIB for 'install'
+Installing /usr/local/share/perl5/MySQL/Sandbox.pm
+Installing /usr/local/share/perl5/MySQL/Sandbox/Scripts.pm
+Installing /usr/local/share/perl5/MySQL/Sandbox/Recipes.pm
+Installing /usr/local/share/man/man3/MySQL::Sandbox::Recipes.3pm
+Installing /usr/local/share/man/man3/MySQL::Sandbox::Scripts.3pm
+Installing /usr/local/share/man/man3/MySQL::Sandbox.3pm
+Installing /usr/local/bin/test_sandbox
+Installing /usr/local/bin/make_sandbox_from_installed
+Installing /usr/local/bin/make_replication_sandbox
+Installing /usr/local/bin/deploy_to_remote_sandboxes.sh
+Installing /usr/local/bin/make_sandbox_from_source
+Installing /usr/local/bin/make_multiple_sandbox
+Installing /usr/local/bin/make_sandbox_from_url
+Installing /usr/local/bin/sbtool
+Installing /usr/local/bin/msandbox
+Installing /usr/local/bin/make_sandbox
+Installing /usr/local/bin/make_multiple_custom_sandbox
+Installing /usr/local/bin/msb
+Installing /usr/local/bin/low_level_make_sandbox
+Appending installation info to /usr/lib64/perl5/perllocal.pod
+  GMAX/MySQL-Sandbox-3.2.17.tar.gz
+  /usr/bin/make install  -- OK
+Warning (usually harmless): 'YAML' not installed, will not store persistent state
+You have mail in /var/spool/mail/root
+[root@master bin]# make
+make                          make_multiple_custom_sandbox  make_sandbox                  make_sandbox_from_url         
+make_driver_db_cups           make_multiple_sandbox         make_sandbox_from_installed   makewhatis                    
+make_driver_db_lpr            make_replication_sandbox      make_sandbox_from_source  
+
+
+
+[root@master bin]# make_sandbox /usr/local/mysql-5.7.20-linux-glibc2.12-x86_64.tar.gz 
+unpacking /usr/local/mysql-5.7.20-linux-glibc2.12-x86_64.tar.gz
+Executing low_level_make_sandbox --basedir=/usr/local/5.7.20 \
+        --sandbox_directory=msb_5_7_20 \
+        --install_version=5.7 \
+        --sandbox_port=5720 \
+        --no_ver_after_name \
+        --my_clause=log-error=msandbox.err
+    The MySQL Sandbox,  version 3.2.17
+    (C) 2006-2018 Giuseppe Maxia
+Installing with the following parameters:
+upper_directory                = /root/sandboxes
+sandbox_directory              = msb_5_7_20
+sandbox_port                   = 5720
+check_port                     = 
+no_check_port                  = 
+datadir_from                   = script
+install_version                = 5.7
+basedir                        = /usr/local/5.7.20
+tmpdir                         = 
+my_file                        = 
+operating_system_user          = root
+db_user                        = msandbox
+remote_access                  = 127.%
+bind_address                   = 127.0.0.1
+ro_user                        = msandbox_ro
+rw_user                        = msandbox_rw
+repl_user                      = rsandbox
+db_password                    = msandbox
+repl_password                  = rsandbox
+my_clause                      = log-error=msandbox.err
+init_options                   = 
+init_my_cnf                    = 
+init_use_cnf                   = 
+master                         = 
+slaveof                        = 
+high_performance               = 
+gtid                           = 
+pre_start_exec                 = 
+pre_grants_exec                = 
+post_grants_exec               = 
+pre_grants_sql                 = 
+post_grants_sql                = 
+pre_grants_file                = 
+post_grants_file               = 
+load_plugin                    = 
+plugin_mysqlx                  = 
+mysqlx_port                    = 
+expose_dd_tables               = 
+custom_mysqld                  = 
+prompt_prefix                  = mysql
+prompt_body                    =  [\h] {\u} (\d) > 
+force                          = 
+no_ver_after_name              = 1
+verbose                        = 
+load_grants                    = 1
+no_load_grants                 = 
+no_run                         = 
+no_show                        = 
+keep_uuid                      = 
+keep_auth_plugin               = 
+history_dir                    = 
+do you agree? ([Y],n) 
+# Starting server
+. sandbox server started
+# Loading grants
+Your sandbox server was installed in $HOME/sandboxes/msb_5_7_20
+You have mail in /var/spool/mail/root
+
+
+[root@master bin]# ps -ef|grep mysqld|grep sandbox
+root     22612     1  0 16:11 pts/2    00:00:00 /bin/sh bin/mysqld_safe --defaults-file=/root/sandboxes/msb_5_7_20/my.sandbox.cnf
+root     22797 22612  0 16:11 pts/2    00:00:00 /usr/local/5.7.20/bin/mysqld --defaults-file=/root/sandboxes/msb_5_7_20/my.sandbox.cnf --basedir=/usr/local/5.7.20 --datadir=/root/sandboxes/msb_5_7_20/data --plugin-dir=/usr/local/5.7.20/lib/plugin --user=root --log-error=msandbox.err --pid-file=/root/sandboxes/msb_5_7_20/data/mysql_sandbox5720.pid --socket=/tmp/mysql_sandbox5720.sock --port=5720
+
+
+[root@master msb_5_7_20]# ll
+total 116
+-rwxr-xr-x 1 root root 1325 Sep 14 16:11 add_option
+-rwxr-xr-x 1 root root 1803 Sep 14 16:11 change_paths
+-rwxr-xr-x 1 root root 1993 Sep 14 16:11 change_ports
+-rwxr-xr-x 1 root root 2972 Sep 14 16:11 clear
+-rw-r--r-- 1 root root 2327 Sep 14 16:11 connection.json
+drwxr-x--- 6 root root 4096 Sep 14 16:11 data
+-rw-r--r-- 1 root root  166 Sep 14 16:11 default_connection.json
+-rw-r--r-- 1 root root 1252 Sep 14 16:11 grants_5_7_6.mysql
+-rw-r--r-- 1 root root 1252 Sep 14 16:11 grants.mysql
+-rwxr-xr-x 1 root root 1410 Sep 14 16:11 json_in_db
+-rwxr-xr-x 1 root root 2237 Sep 14 16:11 load_grants
+-rwxr-xr-x 1 root root 1517 Sep 14 16:11 msb
+-rwxr-xr-x 1 root root 1930 Sep 14 16:11 my
+-rwxr-xr-x 1 root root 1230 Sep 14 16:11 mycli
+-rw-r--r-- 1 root root 1635 Sep 14 16:11 my.sandbox.cnf
+-rwxr-xr-x 1 root root 1512 Sep 14 16:11 mysqlsh
+-rwxr-xr-x 1 root root  919 Sep 14 16:11 proxy_start
+-rw-r--r-- 1 root root 1140 Sep 14 16:11 README
+-rwxr-xr-x 1 root root  978 Sep 14 16:11 restart
+-rwxr-xr-x 1 root root  594 Sep 14 16:11 sb_include
+-rwxr-xr-x 1 root root 1789 Sep 14 16:11 send_kill
+-rwxr-xr-x 1 root root 2195 Sep 14 16:11 show_binlog
+-rwxr-xr-x 1 root root 2429 Sep 14 16:11 show_relaylog
+-rwxr-xr-x 1 root root 2872 Sep 14 16:11 start
+-rwxr-xr-x 1 root root 1272 Sep 14 16:11 status
+-rwxr-xr-x 1 root root 1865 Sep 14 16:11 stop
+drwxr-xr-x 2 root root 4096 Sep 14 16:11 tmp
+-rwxr-xr-x 1 root root 2038 Sep 14 16:11 use
+-rw-r--r-- 1 root root   86 Sep 14 16:11 USING
+[root@master msb_5_7_20]# pwd
+/root/sandboxes/msb_5_7_20
+[root@master msb_5_7_20]# more grants.mysql 
+
+use mysql;
+set password='msandbox';
+-- delete from tables_priv;
+-- delete from columns_priv;
+-- delete from db;
+delete from user where user not in ('root', 'mysql.sys', 'mysqlxsys', 'mysql.session', 'mysql.infoschema');
+
+flush privileges;
+
+create user msandbox@'127.%' identified by 'msandbox';
+grant all on *.* to msandbox@'127.%' ;
+
+create user msandbox@'localhost' identified by 'msandbox';
+grant all on *.* to msandbox@'localhost';
+
+create user msandbox_rw@'localhost' identified by 'msandbox';
+grant SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,INDEX,ALTER,
+    SHOW DATABASES,CREATE TEMPORARY TABLES,LOCK TABLES, EXECUTE 
+    on *.* to msandbox_rw@'localhost';
+
+create user msandbox_rw@'127.%' identified by 'msandbox';
+grant SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,INDEX,ALTER,
+    SHOW DATABASES,CREATE TEMPORARY TABLES,LOCK TABLES, EXECUTE 
+    on *.* to msandbox_rw@'127.%';
+
+create user msandbox_ro@'127.%' identified by 'msandbox';
+create user msandbox_ro@'localhost' identified by 'msandbox';
+create user rsandbox@'127.%' identified by 'rsandbox';
+grant SELECT,EXECUTE on *.* to msandbox_ro@'127.%';
+grant SELECT,EXECUTE on *.* to msandbox_ro@'localhost';
+grant REPLICATION SLAVE on *.* to rsandbox@'127.%';
+create schema if not exists test;
+
+
+
+
+[root@master msb_5_7_20]# mysql -uroot -pmsandbix -S /tmp/mysql_sandbox5720.sock
+mysql: [Warning] Using a password on the command line interface can be insecure.
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+[root@master msb_5_7_20]# mysql -uroot -pmsandbox -S /tmp/mysql_sandbox5720.sock  
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 5.7.20 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2017, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> 
+
+
+-- 创建从库实例,确保mysql package在此路径下
+[root@master local]# make_replication_sandbox --gtid --how_many_slaves=1 --server_version=5.7.20
+installing and starting master
+installing slave 1
+starting slave 1
+. sandbox server started
+initializing slave 1
+replication directory installed in $HOME/sandboxes/rsandbox_5_7_20
+
+
+
+[root@master local]#  ps -ef|grep mysqld|grep -v grep 
+root     23069     1  0 16:59 pts/2    00:00:00 /bin/sh bin/mysqld_safe --defaults-file=/root/sandboxes/rsandbox_5_7_20/master/my.sandbox.cnf
+root     23350 23069  1 16:59 pts/2    00:00:00 /usr/local/5.7.20/bin/mysqld --defaults-file=/root/sandboxes/rsandbox_5_7_20/master/my.sandbox.cnf --basedir=/usr/local/5.7.20 --datadir=/root/sandboxes/rsandbox_5_7_20/master/data --plugin-dir=/usr/local/5.7.20/lib/plugin --user=root --log-error=msandbox.err --pid-file=/root/sandboxes/rsandbox_5_7_20/master/data/mysql_sandbox20795.pid --socket=/tmp/mysql_sandbox20795.sock --port=20795
+root     23468     1  0 17:00 pts/2    00:00:00 /bin/sh bin/mysqld_safe --defaults-file=/root/sandboxes/rsandbox_5_7_20/node1/my.sandbox.cnf
+root     23773 23468  1 17:00 pts/2    00:00:00 /usr/local/5.7.20/bin/mysqld --defaults-file=/root/sandboxes/rsandbox_5_7_20/node1/my.sandbox.cnf --basedir=/usr/local/5.7.20 --datadir=/root/sandboxes/rsandbox_5_7_20/node1/data --plugin-dir=/usr/local/5.7.20/lib/plugin --user=root --log-error=msandbox.err --pid-file=/root/sandboxes/rsandbox_5_7_20/node1/data/mysql_sandbox20796.pid --socket=/tmp/mysql_sandbox20796.sock --port=20796
