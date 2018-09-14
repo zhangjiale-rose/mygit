@@ -1,0 +1,119 @@
+
+需求场景：
+车置宝保卖车业务有许多款项走的线下支付，导致线上付款申请单等记录需要补上，否则流程走不下去。因为生成的数据之间互相依赖id，所以不方便在测试环境先执行再生成SQL刷进现网，需要依赖游标遍历临时表数据，判断每一条数据是否满足条件，满足条件，即增加数据记录。
+
+新增临时表：
+CREATE TABLE `pay_ls` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '申请单号',
+  `carId` int(11) NOT NULL DEFAULT '0' COMMENT '车编',
+  `createTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '操作时间',
+  `payMoney` decimal(11,2) NOT NULL DEFAULT '0.00' COMMENT '单位元',
+  `confirmName` varchar(20) NOT NULL DEFAULT '' COMMENT '收款人',
+  `payType` varchar(5) NOT NULL DEFAULT '' COMMENT '付款类型',
+  `flag` int(2) NOT NULL DEFAULT '0' COMMENT '标识',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2057 DEFAULT CHARSET=utf8 COMMENT='临时数据表';
+
+
+新增存储过程：
+drop procedure if exists cursor_pay;
+delimiter //
+create procedure cursor_pay()
+BEGIN
+DECLARE  account INT DEFAULT 0;
+DECLARE  no_more_record INT DEFAULT 0;
+DECLARE  carId varchar(20);
+DECLARE  createTime timestamp;
+DECLARE  payMoney DECIMAL(11,2);
+DECLARE  payType varchar(3);
+DECLARE  storeId varchar(10) DEFAULT '';
+DECLARE  storeName varchar(20) DEFAULT '';
+DECLARE  confirmName varchar(20);
+DECLARE  applyId varchar(20);
+DECLARE  carFundId varchar(20);
+DECLARE  id varchar(20);
+DECLARE  cur_record CURSOR FOR  select a.id,a.carId,a.createTime,a.payMoney,a.payType,a.confirmName from fms.pay_ls a where a.flag=0;  /*首先这里对游标进行定义*/
+DECLARE  CONTINUE HANDLER  FOR NOT FOUND  SET  no_more_record = 1; /*这个是个条件处理,针对NOT FOUND的条件,当没有记录时赋值为1*/
+OPEN  cur_record; /*接着使用OPEN打开游标*/
+FETCH cur_record INTO id,carId,createTime,payMoney,payType,confirmName; /*把第一行数据写入变量中,游标也随之指向了记录的第一行*/
+WHILE no_more_record != 1 DO
+SELECT
+	ifnull(sum(c.amount), 0) amount into account
+FROM
+	t_fi_payment_apply a,
+	t_fi_car_info_list b,
+	t_fi_car_fund_list c
+WHERE
+	a.flag = 1
+AND c.flag = 1
+AND b.flag = 1
+AND a.id = b.applyId
+AND b.type = 2
+AND b.id = c.carFundId
+AND c.fundType = payType and c.fundType<>1
+AND b.carId = carId;
+
+select ifnull(sum(a.storeID),0) store INTO storeId from chezhibao.t_transaction a where a.carID=carId and a.flag=1 limit 0,1;
+-- SELECT storeId;
+if storeId<>0 then 
+select ifnull(a.`name`,'') `name` into  storeName from chezhibao.t_sys_org a where a.id=storeId;
+end if;
+
+if account>0 then update fms.pay_ls a set a.flag=2 where a.id=id;
+else 
+insert into t_fi_payment_apply(carIds,customerName,status,createTime,storeId,storename,biz_type) values(carId,confirmName,'400',createTime,storeId,storename,'4');
+SELECT LAST_INSERT_ID() into applyId;
+insert into t_fi_car_info_list(carId,type,applyId,amount) values(carId,2,applyId,payMoney);
+SELECT LAST_INSERT_ID() into carFundId;
+insert into t_fi_car_fund_list(fundType,carFundId,amount) values(payType,carFundId,payMoney);
+insert into t_fi_pay_log (type,applyId,title,bak) values(2,applyId,'后端导入','手工新增线下付款数据');
+update fms.pay_ls a set a.flag=1 where a.id=id;
+
+end if;
+-- select id,carId,createTime,payMoney,payType,confirmName;
+ FETCH  cur_record INTO id,carId,createTime,payMoney,payType,confirmName;
+
+END WHILE;
+CLOSE cur_record;
+END;
+//
+delimiter ;
+
+此时，灾难已经发生。search从库产生报错：
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+
+| master_1     |         1 |      NULL | OFF           | ANONYMOUS             |              1049 | Worker 1 failed executing transaction 'ANONYMOUS' at master log che_bin.000010, end_log_pos 495153714; Error 'Unknown database 'fms'' on query. Default database: 'fms'. Query: 'CREATE DEFINER=`xuhang`@`%` PROCEDURE `cursor_pay`()
+BEGIN
+DECLARE  account INT DEFAULT 0;
+ DECLARE  no_more_record INT DEFAULT 0;
+ DECLARE  carId varchar(20);
+ DECLARE  createTime timestamp;
+ DECLARE  payMoney DECIMAL(11,2);
+ DECLARE  payType varchar(3);
+ DECLARE  storeId varchar(10) DEFAULT '';
+ DECLARE  storeName varchar(20) DEFAULT '';
+DECLARE  confirmName varchar(20);
+DECLARE  applyId varchar(20);
+DECLARE  carFundId varchar(20);
+DECLARE  id varchar(20);
+ DECLARE  cur_record CURSOR FOR  select a.id,a.carId,a.createTime,a.payMoney,a.payType,a.confirmName from  fms.pay_ls a where a.flag=0;  /*首先这里对游标进行定义*/
+ 
+  DECLARE  CONTINUE HANDLER  FOR NOT FOUND  SET  no_more_record = 1; /*这个是个条件处理,针对NOT FOUND的条件 ,当没有记录时赋值为1*/
+
+ OPEN  cur_record; 
+
+
+分析原因：
+search库架构为多源复制，同时配置了过滤复制的参数。为了允许跨库更新，采用了replicate-wild-do-db参数，该参数允许跨库更新，比如use A;update B.table1 set ···where···;commit;这类变更，支持过滤表，视图，触发器更新，但是不支持过滤复制存储过程，函数，事件。所以在fms库新增存储过程时候，该参数并未起作用，导致从库报错无fms库。 
+
+解决方案：
+1.测试环境验证的时候，不光要注意对业务数据是否有影响，对主从复制，数据库环境的影响也要重视； 
+2.在执行类似操作时，可以加上set session slq_log_bin=0;不写binlog，从库就不会报错，执行完再将会话级别binlog开启；
+3.在从库新建存储过程，执行完了，捞出新增的数据形成SQL，把从库存储过程和新增数据删了之后去主库刷进SQL。
+4.如果是从库需要复制这个存储过程的话，参数log_bin_trust_function_creators一定要打开。否则也会报错。
+
+
+参考文章：
+此可能为MySQL的一个bug，https://bugs.mysql.com/bug.php?id=59135
+
+对于MySQL5.7版本的过滤复制，几个参数的使用可以参考https://yq.aliyun.com/articles/59268
+
