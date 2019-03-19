@@ -2,6 +2,7 @@
 -- https://www.vividcortex.com/resources/network-analyzer-for-mysql
 
 -- usage 
+cd /usr/local
 unzip vc-mysql-sniffer.zip 
 cd vc-mysql-sniffer
 ./vc-mysql-sniffer -h
@@ -32,43 +33,16 @@ See --license for the terms governing your usage of this program.
   -version                     "false"
 
 
+#测试监控持续30秒，SQL执行情况。
+[root@dbserver220 vc-mysql-sniffer]# python analysis-vc-log.py 3307 30 | sort | uniq -c | sort -nr |head -n 10
+     15  select * from test.jiale where id> x; 
+     12 
+     11  show slave status; 
+     11  show slave hosts; 
+     11  show master status; 
+     11  select substring_index(host, ':', 1) as slave_hostname from information_schema.processlist where command in (x) ; 
+     11  select @@hostname as instance_alias; 
+     11  select @@global.gtid_mode = 'x', @@global.server_uuid, @@global.gtid_purged, @@global.master_info_repository = 'x', @@global.binlog_row_image; 
+     11  select data_center from meta.cluster where cluster_name = left(@@hostname,4) ; 
+     11  select count(*) > x and max(user_name) != 'x' from mysql.slave_master_info; 
 
-[root@master vc-mysql-sniffer]# ./vc-mysql-sniffer -binding="[::]:3307"
-# Time: 091218 14:14:51.010216
-# User@Host: root[root] @ 188.188.23.221:60858 []
-# Query_time: 0.000136
-USE ``;
-select @@version_comment limit 1;
-# Time: 091218 14:15:08.873772
-# User@Host: root[root] @ 188.188.23.221:60858 []
-# Query_time: 0.000109
-show processlist;
-# Time: 091218 14:15:47.670674
-# User@Host: root[root] @ 188.188.23.221:60858 []
-# Query_time: 0.000522
-show variables like '%port%';
-# Time: 091218 14:15:57.545395
-# User@Host: root[root] @ 188.188.23.221:60858 []
-# Query_time: 0.000289
-show databases;
-# Time: 091218 14:15:59.863208
-# User@Host: root[root] @ 188.188.23.221:60858 []
-# Query_time: 0.000114
-SELECT DATABASE();
-# Time: 091218 14:15:59.864819
-# User@Host: root[root] @ 188.188.23.221:60858 []
-# Query_time: 0.000215
-USE `monitor`;
-show databases;
-# Time: 091218 14:15:59.865606
-# User@Host: root[root] @ 188.188.23.221:60858 []
-# Query_time: 0.000173
-show tables;
-# Time: 091218 14:16:03.281198
-# User@Host: root[root] @ 188.188.23.221:60858 []
-# Query_time: 0.000289
-show tables;
-# Time: 091218 14:16:10.248004
-# User@Host: root[root] @ 188.188.23.221:60858 []
-# Query_time: 0.000226
-select * from auto_backup;
